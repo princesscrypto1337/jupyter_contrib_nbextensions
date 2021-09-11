@@ -89,6 +89,12 @@ define([
 	}
 
 	function patch_cell_keyevent () {
+		console.log(log_prefix, 'patching Completer.prototype.finish_completing');
+        var orig_finish_completing = Completer.prototype.finish_completing;
+        Completer.prototype.finish_completing = function (msg) {
+            this.autopick = false;
+			return orig_finish_completing.apply(this, arguments);
+        }
 		console.log(log_prefix, 'patching Cell.prototype.handle_codemirror_keyevent');
 		var orig_handle_codemirror_keyevent = Cell.prototype.handle_codemirror_keyevent;
 		Cell.prototype.handle_codemirror_keyevent = function (editor, event) {
